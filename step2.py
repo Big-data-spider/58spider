@@ -65,7 +65,7 @@ def step2():
         item_pages = sum(item_pages, it_urls)
 
     print item_pages
-    
+
     # 详情页列表保存
     file_zf = open('zf_item_list.txt', 'w')
     file_zf.write(str(item_pages))
