@@ -28,6 +28,7 @@ def step2():
     # 详情页处理
     item_pages = []
     for i in chuzu_list:
+        print i
         it_urls = get_itempage_url.get_url(i)
         time.sleep(numpy.random.randint(3, 6))
         # 详情获取和保存
