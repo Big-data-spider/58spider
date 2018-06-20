@@ -51,12 +51,17 @@ def get_items(url):
             # 城市名
             city = dom.xpath('//div[@class="nav-top-bar fl c_888 f12"]/a/text()')[0].replace('58同城', '')
 
-            fd = open('city_name_temp.txt', 'w', encoding='utf-8')
+            fd = open('city_name_temp.txt', 'w')
             fd.write(city)
             fd.close()
 
             # 所在区
-            district = dom.xpath('//a[@class="c_333 ah"]/text()')[1]
+            if len(dom.xpath('//a[@class="c_333 ah"]/text()')) == 2:
+                district = dom.xpath('//a[@class="c_333 ah"]/text()')[1]
+            elif len(dom.xpath('/html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[5]/span[2]/a[1]')) == 1:
+                district = dom.xpath('/html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[5]/span[2]/a[1]/text()')[0]
+            else:
+                district = '未填写'
             print(district)
 
             # 标题
@@ -72,6 +77,8 @@ def get_items(url):
                 phone_num = dom.xpath('//p[@class="phone-num"]/text()')[0]
             elif len(dom.xpath('//span[@class="house-chat-txt"]/text()')) != 0:
                 phone_num = dom.xpath('//span[@class="house-chat-txt"]/text()')[0]
+            if phone_num.replace(' ', '') == '扫码看电话':
+                phone_num = '站点未提供此内容'
 
             print(phone_num)
 
@@ -102,16 +109,31 @@ def get_items(url):
             # /html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[3]/span[2]
             print(heading)
 
-            # 所在小区
-            community = dom.xpath('//a[@class="c_333 ah"]/text()')[0]
+            # 所在小区'
+            if len(dom.xpath('//a[@class="c_333 ah"]/text()')) != 0:
+                community = dom.xpath('//a[@class="c_333 ah"]/text()')[0]
+            elif len(dom.xpath('/html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[4]/span[2]/a')) != 0:
+                community = dom.xpath('/html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[4]/span[2]/a/text()')[0]
             print(community)
 
             # 详细地址
-            address = dom.xpath('//span[@class="dz"]/text()')[0]
+            if len(dom.xpath('//span[@class="dz"]/text()')) != 0:
+                address = dom.xpath('//span[@class="dz"]/text()')[0]
+
+            elif len(dom.xpath('//span[@class="dz"]/text()')) != 0:
+                address = dom.xpath(dom.xpath('//span[@class="dz"]/text()'))[0]
+            else:
+                address = '未提供'
             print(address)
 
             # 详情描述
-            detail = dom.xpath('//ul[@class="introduce-item"]/li[2]/span[2]/text()')[0]
+            if len(dom.xpath('//ul[@class="introduce-item"]/li[2]/span[2]/text()')) != 0:
+                detail = dom.xpath('//ul[@class="introduce-item"]/li[2]/span[2]/text()')[0]
+            elif len(dom.xpath('//span[@class="a2"]//p/strong/span/text()')) != 0:
+                detail = dom.xpath('//span[@class="a2"]//p/strong/span/text()')
+
+            else:
+                detail = '未提供描述'
             # /html/body/div[4]/div[3]/div[1]/div[2]/ul/li[2]/span[2]
             print(detail)
 
@@ -130,16 +152,24 @@ def get_items(url):
 
             # 房屋优势
             if len(dom.xpath('//ul[@class="introduce-item"]/li[1]/span[2]/text()')) != 0:
-                advantage = dom.xpath('//ul[@class="introduce-item"]/li[1]/span[@class="a2"]/em/text()')[0]
+                # advantage = dom.xpath('//ul[@class="introduce-item"]/li[1]/span[@class="a2"]/em/text()')[0]
+                advantage = dom.xpath('//ul[@class="introduce-item"]/li[1]/span[@class="a2"]/em/text()')
             # /html/body/div[4]/div[3]/div[1]/div[2]/ul/li[1]/span[2]
             else:
                 advantage = '未添加描述'
             print(advantage)
 
             # 图片
-            pic = dom.xpath('//ul[@class="house-pic-list "]/li/img/@lazy_src')
-            print(pic)
 
+            pic = dom.xpath('//ul[@class="house-pic-list "]/li/img/@lazy_src')
+            if (len(pic) != 0) or (pic != None):
+                pic = pic
+            elif len(dom.xpath('//*[@id="housePicList"]/li[1]/img/@lazy_src')) != 0:
+                pic = dom.xpath('//*[@id="housePicList"]/li[1]/img/@lazy_src')
+            else:
+                pic = '业主未提供'
+
+            print(pic)
 
         elif '二手房' in zufang[1]:
             '''
@@ -147,24 +177,20 @@ def get_items(url):
             '''
             pass
 
+        elif len(dom.xpath('//div[@class="curmbar"]/a/text()')) != 0:
+            '''
+            品牌公寓
+            '''
+            print(ppgy[1])
 
+        else:
+            print('遇到了没有匹配的规则')
 
-
-    elif len(dom.xpath('//div[@class="curmbar"]/a/text()')) != 0:
-        '''
-        品牌公寓
-        '''
-        print(ppgy[1])
-
-
-    else:
-        print('遇到了没有匹配的规则')
-
-    return city, district, title, rental_type, phone_num, contacts, url_now, rent, lease, area, heading, community, address, detail, facility, advantage, pic
+        return city, district, title, rental_type, phone_num, contacts, url_now, rent, lease, area, heading, community, address, detail, facility, advantage, pic
 
 
 def get_cname():
-    fd = open('city_name_temp.txt', 'r', encoding='utf-8')
+    fd = open('city_name_temp.txt', 'r')
 
     all_text = fd.read()
     fd.close()
@@ -199,11 +225,19 @@ def result(city_name):
 
 
 def get_region(city):
-    region = result(city)[0]
+    region = result(city)
+    if len(region) != 0:
+        region = result(city)[0]
+    else:
+        region = result(city)
     print(region)
 
     # 省份
-    province = result(city)[1]
+    province = result(city)
+    if len(province) != 0:
+        province = result(city)[1]
+    else:
+        province = result(city)
     print(province)
 
     return region, province

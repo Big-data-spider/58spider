@@ -9,7 +9,7 @@ def dictit():
     '''
 
     try:
-        fd = open('inde_dictss.txt', 'r', encoding='utf-8')
+        fd = open('inde_dictss.txt', 'r')
 
         try:
             all_text = fd.read()

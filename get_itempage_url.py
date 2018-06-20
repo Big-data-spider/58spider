@@ -32,15 +32,28 @@ def get_url(url):
             urls = dom.xpath(x_path)
         print urls
         real_list = []
-        for url in urls:
-            if ('/zd_p/' or '/hezu/' or '/chuzu/' or '/ershoufang/' or '/pinpaigongyu/' or '/legoclick.58.com/') in url:
-                real_list.append(url)
-            elif '//legoclick.58.com/' in url:
-                url_e = 'http:' + url
-                real_list.append(url_e)
+        if len(urls) != 0:
+            for url in urls:
+                if 'legoclick.58.com/' not in url:
 
-            else:
-                print("%s 站点规则未编写"%url)
+                    # if 'zd_p' in url:
+                    #     real_list.append(url)
+                    # elif 'hezu' in url:
+                    #     real_list.append(url)
+                    # elif 'chuzu' in url:
+                    #     real_list.append(url)
+                    # elif 'ershoufang' in url:
+                    #     real_list.append(url)
+                    # elif 'pinpaigongyu' in url:
+                    #     real_list.append(url)
+                    # elif 'zufang' in url:
+                    real_list.append(url)
+                elif '//legoclick.58.com/' in url:
+                    url_e = 'http:' + url
+                    real_list.append(url_e)
+
+                else:
+                    print("%s 站点规则未编写" % url)
 
             # time.sleep(numpy.random.randint(2, 6))
 
@@ -48,10 +61,10 @@ def get_url(url):
         print('没有获取到数据！')
 
     finally:
-        print real_list
-        return real_list
-
-
+        if len(real_list) != None:
+            return real_list
+        else:
+            print '被反或者页面有问题'
 ###############################################
 # '''
 # test
