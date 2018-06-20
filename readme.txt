@@ -18,4 +18,8 @@ work_list               ----            页面地址处理
 *.txt                   ----            数据临时存储文件
 *3.py                   ----            py3测试demo
 
+目录:
+result_                 ----            房源数据
+json_result             ----            临时数据
+url_list                ----            url处理存放
 
