@@ -2,8 +2,11 @@
 parents_urllist         ----            各地首页链接提取
 get_pages               ----            各地分类所有分页链接提取
 get_itempage_url        ----            详情页链接提取
-house_item              ----            详情页内容提取
+haoitem                 ----            详情页内容提取
 
+流程控制
+step1
+step2
 
 辅助工具
 IOutils                 ----            IO操作
