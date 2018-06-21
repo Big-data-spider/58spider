@@ -2,8 +2,11 @@
 parents_urllist         ----            各地首页链接提取
 get_pages               ----            各地分类所有分页链接提取
 get_itempage_url        ----            详情页链接提取
-house_item              ----            详情页内容提取
+haoitem                 ----            详情页内容提取
 
+流程控制
+step1
+step2
 
 辅助工具
 IOutils                 ----            IO操作
@@ -15,4 +18,8 @@ work_list               ----            页面地址处理
 *.txt                   ----            数据临时存储文件
 *3.py                   ----            py3测试demo
 
+目录:
+result_                 ----            房源数据
+json_result             ----            临时数据
+url_list                ----            url处理存放
 
