@@ -1,1 +1,0 @@
-['http://jinzhou.58.com/chuzu/', 'http://jinzhou.58.com/chuzu/pn2/']

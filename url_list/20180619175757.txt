@@ -1,1 +1,0 @@
-['http://ganzi.58.com/ershoufang/', 'http://ganzi.58.com/ershoufang/pn2/', 'http://ganzi.58.com/ershoufang/pn3/', 'http://ganzi.58.com/ershoufang/pn4/', 'http://ganzi.58.com/ershoufang/pn5/', 'http://ganzi.58.com/ershoufang/pn6/']
