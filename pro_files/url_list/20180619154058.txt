@@ -1,0 +1,1 @@
+['http://ab.58.com/ershoufang/', 'http://ab.58.com/ershoufang/pn2/', 'http://ab.58.com/ershoufang/pn3/', 'http://ab.58.com/ershoufang/pn4/', 'http://ab.58.com/ershoufang/pn5/']
