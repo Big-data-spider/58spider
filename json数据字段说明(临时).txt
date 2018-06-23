@@ -1,0 +1,24 @@
+58
+
+统一utf8
+
+地区  region 中文字符串
+省 province 中文字符串
+市 city 中文字符串
+所在区 District 中文字符串
+标题 title 字符串
+出租类型 Rental_type 字符串
+当前房屋url url_now 字符串
+租金 rent 数字或中文字符串
+租赁方式 lease 字符串
+房屋套型、面积和装修情况 area  room Decoration 字符串
+朝向和楼层位置 Heading position 字符串
+所在小区  Community 字符串
+详细地址 address 字符串
+联系人 Contacts 字符串
+联系电话 phone 数字或者字符串
+详情描述 detail 字符串
+包含设施 facility 字符串
+优势 Advantage 字符串
+图片（urls） pic 字典（key:urls或者图片二进制 value:图片描述，若需要节省json文件体积则仅用图片url作为key)
+
