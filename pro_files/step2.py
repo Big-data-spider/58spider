@@ -42,6 +42,7 @@ def step2():
         # 详情获取和保存
         for url in it_urls:
             if url not in done_list:
+                print('############################当前地址不在已完成列表中############################')
                 try:
                     # 得到页面数据
                     city, district, title, rental_type, phone_num, contacts, url_now, rent, lease, area, heading, community, address, detail, facility, advantage, pic = haoitem.get_items(
@@ -61,7 +62,7 @@ def step2():
                         "url_now": url_now,
                         "rent": rent,
                         "lease": lease,
-                        "area": area.replace(' ',''),
+                        "area": area.replace(' ', ''),
                         "heading": heading,
                         "community": community,
                         'address': address,
@@ -76,11 +77,14 @@ def step2():
                     jStr = json.dumps(detel, ensure_ascii=False, indent=1)
                     IOutils.rtfile_time(jStr, 'json')
                     time.sleep(numpy.random.randint(3, 6))
+
                 except:
-                    print('看来有的页面有问题，触发反爬了,休息片刻')
+                    print('############################看来有的页面有问题，触发反爬了,休息片刻############################')
                     error_list.append(url)
                     time.sleep(15)
-
+            else:
+                print('############################页面已经搞过了，下一个############################')
+                time.sleep(numpy.random.randint(3, 5))
             # finally:
             #     return item_pages
 
