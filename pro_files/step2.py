@@ -7,6 +7,8 @@ import time
 import haoitem
 import json
 from result_ import list_check
+import random
+import get_city_info
 
 
 def step2():
@@ -34,6 +36,7 @@ def step2():
 
     # 详情页处理
     item_pages = []
+    random.shuffle(chuzu_list)
     for i in chuzu_list:
         # 显示当前页面地址
         print i
@@ -50,7 +53,7 @@ def step2():
                     # 得到处理后城市名
                     c_name = haoitem.get_cname()
                     # 所在地区和省份
-                    region, province = haoitem.get_region(c_name)
+                    region, province = get_city_info.get_areas(c_name)
                     # 保存到json的内容
                     detel = {
                         "region": region,
@@ -79,7 +82,7 @@ def step2():
                     time.sleep(numpy.random.randint(3, 6))
 
                 except:
-                    print('############################看来有的页面有问题，触发反爬了,休息片刻############################')
+                    print('########################看来有的页面有问题，触发反爬了,休息片刻########################')
                     error_list.append(url)
                     time.sleep(15)
             else:

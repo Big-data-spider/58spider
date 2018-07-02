@@ -34,7 +34,9 @@ def get_url(url):
         real_list = []
         if len(urls) != 0:
             for url in urls:
-                if 'legoclick.58.com/' not in url:
+                if 'http:' not in url:
+                    url = 'http:' + url
+                    # if 'legoclick.58.com/' not in url:
 
                     # if 'zd_p' in url:
                     #     real_list.append(url)
@@ -48,9 +50,9 @@ def get_url(url):
                     #     real_list.append(url)
                     # elif 'zufang' in url:
                     real_list.append(url)
-                elif '//legoclick.58.com/' in url:
-                    url_e = 'http:' + url
-                    real_list.append(url_e)
+                # elif '//legoclick.58.com/' in url:
+                #     url_e = 'http:' + url
+                #     real_list.append(url_e)
 
                 else:
                     print("%s 站点规则未编写" % url)

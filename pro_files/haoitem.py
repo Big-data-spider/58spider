@@ -4,8 +4,7 @@ from lxml import etree
 import requests
 from fake_useragent import UserAgent
 import read_dict3
-
-
+import get_city_info
 # import IOutils
 
 
@@ -54,6 +53,12 @@ def get_items(url):
             fd = open('city_name_temp.txt', 'w')
             fd.write(city)
             fd.close()
+            # city = (dom.xpath('//div[@class="bar_left"]/he/text()'))[0]
+            # city = city.repalce(' ', '')
+            # print city
+            # fd = open('city_name_temp.txt', 'w')
+            # fd.write(city)
+            # fd.close()
 
             # 所在区
             if len(dom.xpath('//a[@class="c_333 ah"]/text()')) == 2:
@@ -96,32 +101,41 @@ def get_items(url):
             print(rent)
 
             # 租赁方式
-            lease = dom.xpath('//span[@class="c_333"]/text()')[0]
+            if len(dom.xpath('//span[@class="c_333"]/text()')) != 0:
+                lease = dom.xpath('//span[@class="c_333"]/text()')[0]
+            else:
+                lease = '未填写，请咨联系人'
             print(lease)
 
             # 房屋套型
             area = dom.xpath('//ul[@class="f14"]/li[2]/span[2]/text()')[0]
             # /html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[2]/span[2]
+            area = area.replace(' ', '')
             print(area)
 
             # 朝向和楼层位置
             heading = dom.xpath('//ul[@class="f14"]/li[3]/span[2]/text()')[0]
             # /html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[3]/span[2]
+            heading = heading.replace(' ', '')
             print(heading)
 
             # 所在小区'
             if len(dom.xpath('//a[@class="c_333 ah"]/text()')) != 0:
                 community = dom.xpath('//a[@class="c_333 ah"]/text()')[0]
+                community = community.replace(' ', '')
             elif len(dom.xpath('/html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[4]/span[2]/a')) != 0:
                 community = dom.xpath('/html/body/div[4]/div[2]/div[2]/div[1]/div[1]/ul/li[4]/span[2]/a/text()')[0]
+                community = community.replace(' ', '')
             print(community)
 
             # 详细地址
             if len(dom.xpath('//span[@class="dz"]/text()')) != 0:
                 address = dom.xpath('//span[@class="dz"]/text()')[0]
+                address = address.replace(' ', '')
 
             elif len(dom.xpath('//span[@class="dz"]/text()')) != 0:
                 address = dom.xpath(dom.xpath('//span[@class="dz"]/text()'))[0]
+                address = address.replace(' ', '')
             else:
                 address = '未提供'
             print(address)
@@ -152,9 +166,7 @@ def get_items(url):
 
             # 房屋优势
             if len(dom.xpath('//ul[@class="introduce-item"]/li[1]/span[2]/text()')) != 0:
-                # advantage = dom.xpath('//ul[@class="introduce-item"]/li[1]/span[@class="a2"]/em/text()')[0]
                 advantage = dom.xpath('//ul[@class="introduce-item"]/li[1]/span[@class="a2"]/em/text()')
-            # /html/body/div[4]/div[3]/div[1]/div[2]/ul/li[1]/span[2]
             else:
                 advantage = '未添加描述'
             print(advantage)
@@ -168,6 +180,15 @@ def get_items(url):
                 pic = dom.xpath('//*[@id="housePicList"]/li[1]/img/@lazy_src')
             else:
                 pic = '业主未提供'
+
+            if pic != '业主未提供':
+                pic_new = []
+                for pic_url in pic:
+                    if 'http:' not in pic_url:
+                        # pic.remove(pic_url)
+                        new_url = 'http:' + pic_url
+                        pic_new.append(new_url)
+                        pic = pic_new
 
             print(pic)
 
@@ -186,7 +207,7 @@ def get_items(url):
         else:
             print('遇到了没有匹配的规则')
 
-        return city, district, title, rental_type, phone_num, contacts, url_now, rent, lease, area, heading, community, address, detail, facility, advantage, pic
+    return city, district, title, rental_type, phone_num, contacts, url_now, rent, lease, area, heading, community, address, detail, facility, advantage, pic
 
 
 def get_cname():
@@ -199,47 +220,46 @@ def get_cname():
 
     return city_name
 
-
-def result(city_name):
-    map_dicts = read_dict3.dictit()
-    # print(map_dicts)
-    kyes = []
-    vs = []
-    for key, value in map_dicts.items():
-        kyes.append(key)
-        vs.append(value)
-    #
-    # # print(kyes)
-    # # print('000000000000000')
-    # # print(vs)
-    #
-    for i in vs:
-        if city_name in i:
-            ind = vs.index(i)
-            # print(ind)
-            # print(vs[ind])
-            # print(kyes[ind])
-    res = list(kyes[ind])
-
-    return res
-
-
-def get_region(city):
-    region = result(city)
-    if len(region) != 0:
-        region = result(city)[0]
-    else:
-        region = result(city)
-    print(region)
-
-    # 省份
-    province = result(city)
-    if len(province) != 0:
-        province = result(city)[1]
-    else:
-        province = result(city)
-    print(province)
-
-    return region, province
+# def result(city_name):
+#     map_dicts = read_dict3.dictit()
+#     # print(map_dicts)
+#     kyes = []
+#     vs = []
+#     for key, value in map_dicts.items():
+#         kyes.append(key)
+#         vs.append(value)
+#     #
+#     # # print(kyes)
+#     # # print('000000000000000')
+#     # # print(vs)
+#     #
+#     for i in vs:
+#         if city_name in i:
+#             ind = vs.index(i)
+#             # print(ind)
+#             # print(vs[ind])
+#             # print(kyes[ind])
+#     res = list(kyes[ind])
+#
+#     return res
+#
+#
+# def get_region(city):
+#     region = result(city)
+#     if len(region) != 0:
+#         region = result(city)[0]
+#     else:
+#         region = result(city)
+#     print(region)
+#
+#     # 省份
+#     province = result(city)
+#     if len(province) != 0:
+#         province = result(city)[1]
+#     else:
+#         province = result(city)
+#     print(province)
+#
+#     return region, province
 
 #############################################
