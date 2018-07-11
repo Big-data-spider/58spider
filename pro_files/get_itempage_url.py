@@ -36,6 +36,7 @@ def get_url(url):
             for url in urls:
                 if 'http:' not in url:
                     url = 'http:' + url
+                    # url = url.replace('-','')
                     # if 'legoclick.58.com/' not in url:
 
                     # if 'zd_p' in url:

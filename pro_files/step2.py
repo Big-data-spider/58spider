@@ -9,6 +9,7 @@ import json
 from result_ import list_check
 import random
 import get_city_info
+import write_db
 
 
 def step2():
@@ -45,46 +46,56 @@ def step2():
         # 详情获取和保存
         for url in it_urls:
             if url not in done_list:
-                print('############################当前地址不在已完成列表中############################')
-                try:
-                    # 得到页面数据
-                    city, district, title, rental_type, phone_num, contacts, url_now, rent, lease, area, heading, community, address, detail, facility, advantage, pic = haoitem.get_items(
-                        url)
-                    # 得到处理后城市名
-                    c_name = haoitem.get_cname()
-                    # 所在地区和省份
-                    region, province = get_city_info.get_areas(c_name)
-                    # 保存到json的内容
-                    detel = {
-                        "region": region,
-                        "province": province,
-                        "city": city,
-                        "district": district,
-                        "title": title,
-                        "rental_type": rental_type,
-                        "url_now": url_now,
-                        "rent": rent,
-                        "lease": lease,
-                        "area": area.replace(' ', ''),
-                        "heading": heading,
-                        "community": community,
-                        'address': address,
-                        "contacts": contacts,
-                        "phone": phone_num,
-                        "detail": detail,
-                        "facility": facility,
-                        "advantage": advantage,
-                        "pics": pic
-                    }
+                if 'e.58.com' in url:
+                    print('无效地址。。下一个')
 
-                    jStr = json.dumps(detel, ensure_ascii=False, indent=1)
-                    IOutils.rtfile_time(jStr, 'json')
-                    time.sleep(numpy.random.randint(3, 6))
+                elif 'jxjump' in url:
+                    print('无效地址。。下一个')
+                else:
+                    if 'short.58.com' in url:
+                        url = url.replace('&end=end', '')
+                    print('############################当前地址不在已完成列表中############################')
+                    try:
+                        # 得到页面数据
+                        city, district, title, rental_type, phone_num, contacts, url_now, rent, lease, area, heading, community, address, detail, facility, advantage, pic = haoitem.get_items(
+                            url)
+                        # 得到处理后城市名
+                        c_name = haoitem.get_cname()
+                        # 所在地区和省份
+                        region, province = get_city_info.get_areas(c_name)
+                        # 保存到json的内容
+                        detel = {
+                            "region": region,
+                            "province": province,
+                            "city": city,
+                            "district": district,
+                            "title": title,
+                            "rental_type": rental_type,
+                            "url_now": url_now,
+                            "rent": rent,
+                            "lease": lease,
+                            "area": area.replace(' ', ''),
+                            "heading": heading,
+                            "community": community,
+                            'address': address,
+                            "contacts": contacts,
+                            "phone": phone_num,
+                            "detail": detail,
+                            "facility": facility,
+                            "advantage": advantage,
+                            "pics": pic
+                        }
 
-                except:
-                    print('########################看来有的页面有问题，触发反爬了,休息片刻########################')
-                    error_list.append(url)
-                    time.sleep(15)
+                        jStr = json.dumps(detel, ensure_ascii=False, indent=1)
+                        IOutils.rtfile_time_with_path(jStr, 'json')
+                        write_db.data_in(detel)
+                        time.sleep(numpy.random.randint(3, 6))
+
+                    except:
+                        print('########################看来有的页面有问题，触发反爬了,休息片刻########################')
+                        print('#' * 20 + url + '\t' + '#' * 20)
+                        error_list.append(url)
+                        time.sleep(15)
             else:
                 print('############################页面已经搞过了，下一个############################')
                 time.sleep(numpy.random.randint(3, 5))

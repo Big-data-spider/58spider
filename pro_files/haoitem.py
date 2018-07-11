@@ -49,6 +49,7 @@ def get_items(url):
 
             # 城市名
             city = dom.xpath('//div[@class="nav-top-bar fl c_888 f12"]/a/text()')[0].replace('58同城', '')
+            print(city)
 
             fd = open('city_name_temp.txt', 'w')
             fd.write(city)
